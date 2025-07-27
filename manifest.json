@@ -1,9 +1,9 @@
 {
-  "id": "memex",
-  "name": "Memex",
+  "id": "walros",
+  "name": "walrOS",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
-  "description": "Obsidian tools for Zettelkasten-style notes.",
+  "description": "Personal Obsidian tools.",
   "author": "Ali Yahya",
   "authorUrl": "https://github.com/ali01",
   "isDesktopOnly": false

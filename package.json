@@ -1,7 +1,7 @@
 {
-  "name": "obsidian-memex",
+  "name": "obsidian-walros",
   "version": "1.0.0",
-  "description": "Obsidian tools for Zettelkasten-style notes.",
+  "description": "Personal Obsidian tools.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
@@ -24,7 +24,7 @@
   "keywords": [
     "obsidian",
     "plugin",
-    "memex"
+    "walros"
   ],
   "author": "Ali Yahya",
   "license": "MIT",
