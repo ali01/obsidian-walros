@@ -48,6 +48,7 @@ export class TFile extends TAbstractFile {
 export class Plugin {
   app: any;
   manifest: any;
+  commands: Record<string, any> = {};
 
   async loadData() {
     return {};
@@ -55,6 +56,15 @@ export class Plugin {
 
   async saveData(data: any) {
     return;
+  }
+
+  addCommand(command: any) {
+    this.commands[command.id] = command;
+    return command;
+  }
+
+  removeCommand(commandId: string) {
+    delete this.commands[commandId];
   }
 }
 
@@ -82,6 +92,13 @@ export class Editor {
 }
 
 export class Vault {
+  adapter: any = {
+    exists: async (_path: string): Promise<boolean> => false,
+    read: async (_path: string): Promise<string> => ''
+  };
+  root: TFolder = new TFolder({ path: '', name: '', isRoot: true });
+  files: Record<string, TAbstractFile> = {};
+
   async read(file: TFile): Promise<string> {
     return '';
   }
@@ -90,8 +107,24 @@ export class Vault {
     return;
   }
 
-  getAbstractFileByPath(path: string): TFile | null {
-    return null;
+  async create(path: string, data: string): Promise<TFile> {
+    const file = new TFile({ path, name: path.split('/').pop() ?? path });
+    this.files[path] = file;
+    return file;
+  }
+
+  async createFolder(path: string): Promise<TFolder> {
+    const folder = new TFolder({ path, name: path.split('/').pop() ?? path });
+    this.files[path] = folder;
+    return folder;
+  }
+
+  getAbstractFileByPath(path: string): TAbstractFile | null {
+    return this.files[path] ?? null;
+  }
+
+  getRoot(): TFolder {
+    return this.root;
   }
 }
 
@@ -146,6 +179,7 @@ export class Setting {
     const button = {
       setButtonText: (text: string) => button,
       setCta: () => button,
+      setDisabled: (disabled: boolean) => button,
       onClick: (handler: () => void) => button
     };
     cb(button);
@@ -198,4 +232,12 @@ export interface FuzzyMatch<T> {
     score: number;
     matches: number[][];
   };
+}
+
+export function normalizePath(path: string): string {
+  return path
+    .replace(/\\/g, '/')
+    .split('/')
+    .filter((segment) => segment !== '')
+    .join('/');
 }
